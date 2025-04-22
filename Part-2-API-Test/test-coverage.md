@@ -2,70 +2,70 @@ This document describes which checks have been implemented for the API that proc
 
 #### 1. `GET /posts`
 **Response code:** 200;<br>
-**Response format:** JSON, array of objects;<br>
-**Structure check:** each object contains `id`, `title`, `author`;<br>
-**Data check:** `id` values are unique, `title` and `author` are strings, not empty;<br>
+**Response format:** JSON is array of objects;<br>
+**Structure check:** each object has `id`, `title`, `author`;<br>
+**Data check:** `id` values are unique, numbers, not empty, `title` and `author` are strings, not empty;<br>
+**Matching check:** `title` and `author` contain "Post" and "Author";<br>
 **Record count check:** matches expected number of posts.
 
 #### 2.	`GET /posts/{id}`
 
-**Response code:** 200 for existing `id`, 404 for non-existent;<br>
-**Structure check:** object with `id`, `title`, `author`;<br>
-**Matching check:** returned `id` matches requested one;<br>
-**Data check:** `title` and `author` are non-empty strings.
+**Response code:** 200 for existing `id`, 404 for not existing;<br>
+**Structure check:** object has `id`, `title`, `author`;<br>
+**Data check:** `id` value are number, not empty, `title` and `author` are strings, not empty;<br>
+**Matching check:** `title` and `author` contain "Post" and "Author".<br>
 
 #### 3. `POST /posts`
 
-**Response code:** 201 on successful creation;<br>
-**Check:** request body contains `title`, `author`;<br>
-**Response check:** returned created object with new `id`, `title`, `author`;<br>
+**Response code:** 201 for successful creation;<br>
+**Structure check:** created object has `id`, `title`, `author`;<br>
+**Data check:** `id` value are not empty, `title` and `author` are strings and have expected values;<br>
 **Database check:** new post is added to the list.
 	
 #### 4.	`PUT /posts/{id}`
-**Response code:** 200 for existing `id`, 404 for non-existent;<br>
-**Check:** request body contains `title`, `author`;<br>
-**Response check:** returned updated object;<br>
+**Response code:** 200 for existing `id`, 404 for not existing;<br>
+**Structure check:** updated object has `id`, `title`, `author`;<br>
+**Data check:** `title` and `author` are strings and have expected values;<br>
 **Database check:** post data is updated.
 	
 #### 5.	`DELETE /posts/{id}`
-**Response code:** 200 (or 204) for existing `id`, 404 for non-existent;<br>
-**Database check:** post is removed from the list.
+**Response code:** 200 or 204 for existing `id`, 404 for not existing;<br>
+**Database check:** post is removed.
 
 #### 6. `GET /comments`
 
 **Response code:** 200;<br>
-**Response format:** JSON, array of objects;<br>
-**Structure check:** each object contains `id`, `body`, `postId`;<br>
-**Data check:** `id` values are unique, `body` is a string, `postId` refers to an existing post;<br>
-**Filter by postId:** returns only comments for the specified `postId`.
+**Response format:** JSON is array of objects;<br>
+**Structure check:** each object has `id`, `body`, `postId`;<br>
+**Data check:** `id` values are unique, numbers, not empty, `body` values are strings, not empty, `postId` values are numbers, not empty, have an existing post;<br>
 	
 #### 7.	`GET /comments/{id}`
-**Response code:** 200 for existing `id`, 404 for non-existent;<br>
-**Structure check:** object with `id`, `body`, `postId`;<br>
-**Data check:** `postId` refers to an existing post.
+**Response code:** 200 for existing `id`, 404 for not existing;<br>
+**Structure check:** object has `id`, `body`, `postId`;<br>
+**Data check:** `id` value are number, not empty, `body` values are strings, not empty;<br>
 	
 #### 8.	`POST /comments`
-**Response code:** 201 on successful creation;<br>
-**Check:** request body contains `body`, `postId`;<br>
-**Response check:** returned created object with new `id`;<br>
-**Database check:** comment is added, `postId` is valid.
+**Response code:** 201 for successful creation;<br>
+**Structure check:** created object has `id`, `body`, `postId`;<br>
+**Data check:** `id` value are number, not empty, `body` and `postId` have expected values;<br>
+**Database check:** comment is added for existing `postId`, not added for not existing.
 
 #### 9. `PUT /comments/{id}`
 
-**Response code:** 200 for existing `id`, 404 for non-existent;<br>
-**Check:** request body contains `body`, `postId`;<br>
-**Response check:** returned updated object;<br>
-**Database check:** comment data is updated.
+**Response code:** 200 for existing `id`, 404 for not existing;<br>
+**Structure check:** updated object has `id`, `body`, `postId`;<br>
+**Data check:** `body` and `postId` are strings and have expected values;<br>
+**Database check:** comment is updated.
 
 #### 10. `DELETE /comments/{id}`
 
-**Response code:** 200 (or 204) for existing `id`, 404 for non-existent;<br>
+**Response code:** 200 or 204 for existing `id`, 404 for not exsisting;<br>
 **Database check:** comment is removed.
 
 #### 11. `GET /profile`
 **Response code:** 200;<br>
-**Structure check:** object with field `name`;<br>
-**Data check:** `name` is a non-empty string.
+**Structure check:** object has `name`;<br>
+**Data check:** `name` is not empty string.
 
 Additional Tests:
 
