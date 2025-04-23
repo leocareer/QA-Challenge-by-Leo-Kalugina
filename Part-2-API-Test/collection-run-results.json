@@ -1,0 +1,1567 @@
+{
+	"id": "01add559-117a-4540-9bca-49fb9f5006bd",
+	"name": "QA-Challenge",
+	"timestamp": "2025-04-23T13:12:15.107Z",
+	"collection_id": "23550378-95b024ef-2ea7-467c-9fa5-59305794a569",
+	"folder_id": 0,
+	"environment_id": "0",
+	"totalPass": 70,
+	"delay": 0,
+	"persist": true,
+	"status": "finished",
+	"startedAt": "2025-04-23T13:12:14.306Z",
+	"totalFail": 25,
+	"results": [
+		{
+			"id": "8eadd8c2-817b-46eb-bafb-c6ae87c592f8",
+			"name": "1.1. GET /posts - Success - ReturnedData",
+			"url": "http://localhost:3000/posts",
+			"time": 17,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response is an array": true,
+				"Each object has id, title, and author": true,
+				"ID values are not empty": true,
+				"ID values are positive numbers": false,
+				"ID values are unique": true,
+				"Title and Author are not empty strings": true,
+				"Title and Author match expected": true,
+				"Expected number of posts": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response is an array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each object has id, title, and author": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are positive numbers": {
+					"pass": 0,
+					"fail": 1
+				},
+				"ID values are unique": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Title and Author are not empty strings": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Title and Author match expected": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Expected number of posts": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				17
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response is an array": true,
+					"Each object has id, title, and author": true,
+					"ID values are not empty": true,
+					"ID values are positive numbers": false,
+					"ID values are unique": true,
+					"Title and Author are not empty strings": true,
+					"Title and Author match expected": true,
+					"Expected number of posts": true
+				}
+			]
+		},
+		{
+			"id": "9a2017a8-79d4-4eb2-a9cb-ab61a0f1a690",
+			"name": "1.2 GET /posts - Success - Sorting",
+			"url": "http://localhost:3000/posts?_sort=id&_order=desc",
+			"time": 25,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Posts are sorted by id in descending order": false
+			},
+			"testPassFailCounts": {
+				"Posts are sorted by id in descending order": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				25
+			],
+			"allTests": [
+				{
+					"Posts are sorted by id in descending order": false
+				}
+			]
+		},
+		{
+			"id": "92b5c594-c2bd-425f-a157-6c74d67bcd54",
+			"name": "2.1. GET /posts/{id} - Success - ReturnedData",
+			"url": "http://localhost:3000/posts/1",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 for existing id": true,
+				"Object has id, title, and author": true,
+				"ID values are not empty": true,
+				"ID values are positive numbers": false,
+				"Title and Author are not empty strings": true,
+				"Title and Author match expected": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 for existing id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Object has id, title, and author": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are positive numbers": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Title and Author are not empty strings": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Title and Author match expected": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 200 for existing id": true,
+					"Object has id, title, and author": true,
+					"ID values are not empty": true,
+					"ID values are positive numbers": false,
+					"Title and Author are not empty strings": true,
+					"Title and Author match expected": true
+				}
+			]
+		},
+		{
+			"id": "168aabf3-b61e-4f6e-849c-3d35a5886294",
+			"name": "2.2. GET /posts/{id} - Error - NotExisting",
+			"url": "http://localhost:3000/posts/100",
+			"time": 4,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404 for not existing id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404 for not existing id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				4
+			],
+			"allTests": [
+				{
+					"Status code is 404 for not existing id": true
+				}
+			]
+		},
+		{
+			"id": "2f79b87b-e1df-4803-a953-7286b3c83fdd",
+			"name": "3.1. POST /posts - Success - ReturnedData",
+			"url": "http://localhost:3000/posts",
+			"time": 6,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response contains id, title, and author": true,
+				"ID values are not empty": true,
+				"ID values are positive numbers": false,
+				"Title and Author have expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains id, title, and author": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are positive numbers": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Title and Author have expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response contains id, title, and author": true,
+					"ID values are not empty": true,
+					"ID values are positive numbers": false,
+					"Title and Author have expected values": true
+				}
+			]
+		},
+		{
+			"id": "574060c1-91cb-491c-9e98-20e8b6af3ccd",
+			"name": "3.2. GET /posts/{id} - Success - CreatedObject",
+			"url": "http://localhost:3000/posts/8de7",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Title and Author has expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Title and Author has expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Title and Author has expected values": true
+				}
+			]
+		},
+		{
+			"id": "934b0a72-8d30-4d2f-97d5-50aad38f0a32",
+			"name": "3.3. POST /posts - Error - EmptyFields",
+			"url": "http://localhost:3000/posts",
+			"time": 3,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 400 or 422": false,
+				"Response contains validation error message": false
+			},
+			"testPassFailCounts": {
+				"Status code is 400 or 422": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response contains validation error message": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 400 or 422": false,
+					"Response contains validation error message": false
+				}
+			]
+		},
+		{
+			"id": "e9dbff1a-d6ea-4769-91a1-b83680e4e10b",
+			"name": "3.4. POST /posts - Error - TooLongFields",
+			"url": "http://localhost:3000/posts",
+			"time": 5,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 400 for too long fields": false,
+				"Response contains validation error message": false
+			},
+			"testPassFailCounts": {
+				"Status code is 400 for too long fields": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response contains validation error message": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				5
+			],
+			"allTests": [
+				{
+					"Status code is 400 for too long fields": false,
+					"Response contains validation error message": false
+				}
+			]
+		},
+		{
+			"id": "3eb58fe0-b4af-4c8d-bd41-31045762cddf",
+			"name": "4.1. PUT /posts/{id} - Success - ReturnedData",
+			"url": "http://localhost:3000/posts/8de7",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 for existing id": true,
+				"Response contains id, title, and author": true,
+				"Title and Author has expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 for existing id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains id, title, and author": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Title and Author has expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Status code is 200 for existing id": true,
+					"Response contains id, title, and author": true,
+					"Title and Author has expected values": true
+				}
+			]
+		},
+		{
+			"id": "043b9ec5-6382-46c9-8451-d9255833597d",
+			"name": "4.2. GET /posts/{id} - Success - UpdatedObject",
+			"url": "http://localhost:3000/posts/8de7",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Title and Author have expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Title and Author have expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Title and Author have expected values": true
+				}
+			]
+		},
+		{
+			"id": "efc9108b-1283-42f3-b94b-07192e02fce3",
+			"name": "4.3. PUT /posts/{id} - Error - NotExisting",
+			"url": "http://localhost:3000/posts/100",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404 for not existing id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404 for not existing id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404 for not existing id": true
+				}
+			]
+		},
+		{
+			"id": "3ae13327-ba28-4d18-924f-315d4268fb1c",
+			"name": "4.4. PUT /posts/{id} - Error - TooLongFields",
+			"url": "http://localhost:3000/posts/8de7",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 400 for too long fields": false,
+				"Response contains validation error message": false
+			},
+			"testPassFailCounts": {
+				"Status code is 400 for too long fields": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response contains validation error message": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 400 for too long fields": false,
+					"Response contains validation error message": false
+				}
+			]
+		},
+		{
+			"id": "f8590503-2d6a-4446-b90f-277c430add5d",
+			"name": "5.1. DELETE /posts/{id} - Success - ReturnedData",
+			"url": "http://localhost:3000/posts/8de7",
+			"time": 7,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 or 204 for existing id": true,
+				"Object has id, title, and author": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 or 204 for existing id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Object has id, title, and author": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				7
+			],
+			"allTests": [
+				{
+					"Status code is 200 or 204 for existing id": true,
+					"Object has id, title, and author": true
+				}
+			]
+		},
+		{
+			"id": "fee4f9c6-eeb4-4807-93ea-b0f14fab2c73",
+			"name": "5.2. GET /posts/{id} - Error - DeletedObject",
+			"url": "http://localhost:3000/posts/8de7",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404": true
+				}
+			]
+		},
+		{
+			"id": "e1ac4627-22eb-4918-97fc-6604f8367a40",
+			"name": "5.3. DELETE /posts/{id} - Error - DeletedObject",
+			"url": "http://localhost:3000/posts/8de7",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404": true
+				}
+			]
+		},
+		{
+			"id": "6d8d846d-c34f-4759-8f73-5061ee8be918",
+			"name": "5.4. DELETE /posts/{id} - Error - NotExisting",
+			"url": "http://localhost:3000/posts/100",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404 for not existing id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404 for not existing id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404 for not existing id": true
+				}
+			]
+		},
+		{
+			"id": "599f3853-e036-46f0-b198-dd67d471757e",
+			"name": "5.5. DELETE /posts/{id} - Success - PreparingFor5.6",
+			"url": "http://localhost:3000/posts/1",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 or 204": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 or 204": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 200 or 204": true
+				}
+			]
+		},
+		{
+			"id": "5a7cbfa8-c6fc-4a46-995b-9d8cbd70412d",
+			"name": "5.6. GET /comments/{id} - Success - DeletedPostComments",
+			"url": "http://localhost:3000/comments?postId=1",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Comments deleted with deleted post": false
+			},
+			"testPassFailCounts": {
+				"Comments deleted with deleted post": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Comments deleted with deleted post": false
+				}
+			]
+		},
+		{
+			"id": "6062e207-2c37-4562-a039-978b862845f7",
+			"name": "6.1. GET /comments - Success - ReturnedData",
+			"url": "http://localhost:3000/comments",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Response is an array": true,
+				"Each object has id, body, and postId": true,
+				"ID values are not empty": true,
+				"ID values are positive numbers": false,
+				"ID values are unique": true,
+				"Body values are not empty strings": true,
+				"PostId values are not empty": true,
+				"PostId values are positive numbers": true,
+				"Each postId matches an existing post": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response is an array": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each object has id, body, and postId": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are positive numbers": {
+					"pass": 0,
+					"fail": 1
+				},
+				"ID values are unique": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body values are not empty strings": {
+					"pass": 1,
+					"fail": 0
+				},
+				"PostId values are not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"PostId values are positive numbers": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Each postId matches an existing post": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Response is an array": true,
+					"Each object has id, body, and postId": true,
+					"ID values are not empty": true,
+					"ID values are positive numbers": false,
+					"ID values are unique": true,
+					"Body values are not empty strings": true,
+					"PostId values are not empty": true,
+					"PostId values are positive numbers": true,
+					"Each postId matches an existing post": true
+				}
+			]
+		},
+		{
+			"id": "9df6c2be-9bce-4e9d-ba0e-33a63e00cbcc",
+			"name": "6.2 GET /comments - Success - Sorting",
+			"url": "http://localhost:3000/comments?_sort=id&_order=desc",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Posts are sorted by id in descending order": false
+			},
+			"testPassFailCounts": {
+				"Posts are sorted by id in descending order": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Posts are sorted by id in descending order": false
+				}
+			]
+		},
+		{
+			"id": "905ec80c-dd1e-45c2-b13f-7d2d9d15794b",
+			"name": "7.1. GET /comments/{id}  - Success - ReturnedData",
+			"url": "http://localhost:3000/comments/1",
+			"time": 1,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 for existing id": true,
+				"Object has id, body, and postId": true,
+				"ID values are not empty": true,
+				"ID values are positive numbers": false,
+				"Body values are not empty strings": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 for existing id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Object has id, body, and postId": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are positive numbers": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Body values are not empty strings": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				1
+			],
+			"allTests": [
+				{
+					"Status code is 200 for existing id": true,
+					"Object has id, body, and postId": true,
+					"ID values are not empty": true,
+					"ID values are positive numbers": false,
+					"Body values are not empty strings": true
+				}
+			]
+		},
+		{
+			"id": "4131cb21-dceb-40ed-bf13-2081d38206d0",
+			"name": "7.2. GET /comments/{id} - Error - NotExisting",
+			"url": "http://localhost:3000/comments/100",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404 for not existing id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404 for not existing id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404 for not existing id": true
+				}
+			]
+		},
+		{
+			"id": "e8f1fd8e-a3ce-45ab-81e0-45f4f1365fb3",
+			"name": "8.1. POST /comments - Success - ReturnedData",
+			"url": "http://localhost:3000/comments",
+			"time": 3,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 201": true,
+				"Response contains id, body, and postId": true,
+				"ID values are not empty": true,
+				"ID values are positive number": false,
+				"Body and postId have expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 201": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains id, body, and postId": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are not empty": {
+					"pass": 1,
+					"fail": 0
+				},
+				"ID values are positive number": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Body and postId have expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 201": true,
+					"Response contains id, body, and postId": true,
+					"ID values are not empty": true,
+					"ID values are positive number": false,
+					"Body and postId have expected values": true
+				}
+			]
+		},
+		{
+			"id": "e2e80ca2-0764-447c-9f38-f4887d340b86",
+			"name": "8.2. GET /comments/{id} - Success - CreatedObject",
+			"url": "http://localhost:3000/comments/56fb",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body and postId has expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body and postId has expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body and postId has expected values": true
+				}
+			]
+		},
+		{
+			"id": "cd77396d-f0b6-490d-a70c-45792abea740",
+			"name": "8.3. POST /comments - Error - EmptyFields",
+			"url": "http://localhost:3000/comments",
+			"time": 3,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 400 or 422 for existing id": false,
+				"Response contains validation error message": false
+			},
+			"testPassFailCounts": {
+				"Status code is 400 or 422 for existing id": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response contains validation error message": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 400 or 422 for existing id": false,
+					"Response contains validation error message": false
+				}
+			]
+		},
+		{
+			"id": "84b7b38b-be00-4d31-88bf-a29a2301af2b",
+			"name": "8.4. POST /comments - Error - InvalidPostID",
+			"url": "http://localhost:3000/comments",
+			"time": 3,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 400 or 422": false,
+				"Response contains validation error message": false
+			},
+			"testPassFailCounts": {
+				"Status code is 400 or 422": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response contains validation error message": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 400 or 422": false,
+					"Response contains validation error message": false
+				}
+			]
+		},
+		{
+			"id": "50e0c005-f782-473d-8e81-2e0931368a73",
+			"name": "8.5. POST /comments - Error - TooLongFields",
+			"url": "http://localhost:3000/comments",
+			"time": 3,
+			"responseCode": {
+				"code": 201,
+				"name": "Created"
+			},
+			"tests": {
+				"Status code is 400 for too long fields": false,
+				"Response contains validation error message": false
+			},
+			"testPassFailCounts": {
+				"Status code is 400 for too long fields": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response contains validation error message": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 400 for too long fields": false,
+					"Response contains validation error message": false
+				}
+			]
+		},
+		{
+			"id": "397b4156-5b76-47aa-a764-8bcd96688d3b",
+			"name": "9.1. PUT /comments/{id} - Success - ReturnedData",
+			"url": "http://localhost:3000/comments/56fb",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 for existing id": true,
+				"Response contains id, body, and postId": true,
+				"Body and postId has expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 for existing id": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Response contains id, body, and postId": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body and postId has expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 200 for existing id": true,
+					"Response contains id, body, and postId": true,
+					"Body and postId has expected values": true
+				}
+			]
+		},
+		{
+			"id": "9e31d66a-b767-46aa-9456-7c7ab7a7e4c4",
+			"name": "9.2. GET /comments/{id} - Success - UpdatedObject",
+			"url": "http://localhost:3000/comments/56fb",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Body and postId has expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Body and postId has expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Body and postId has expected values": true
+				}
+			]
+		},
+		{
+			"id": "ed5da6ac-9fc3-4c81-85d5-d7dedec8f982",
+			"name": "9.3. PUT /comments/{id} - Error - NotExisting",
+			"url": "http://localhost:3000/comments/100",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404 for not existing id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404 for not existing id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404 for not existing id": true
+				}
+			]
+		},
+		{
+			"id": "b8a07b69-4167-4fe0-8e86-5debc193eba1",
+			"name": "9.4. PUT /comments/{id} - Error - TooLongFields",
+			"url": "http://localhost:3000/comments/56fb",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 400 for too long fields": false,
+				"Response contains validation error message": false
+			},
+			"testPassFailCounts": {
+				"Status code is 400 for too long fields": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response contains validation error message": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 400 for too long fields": false,
+					"Response contains validation error message": false
+				}
+			]
+		},
+		{
+			"id": "ce3297ed-4f43-4884-8b57-6bfea4b1b82a",
+			"name": "10.1. DELETE /comments/{id} - Success - ReturnedData",
+			"url": "http://localhost:3000/comments/56fb",
+			"time": 3,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200 or 204 for existing id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200 or 204 for existing id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				3
+			],
+			"allTests": [
+				{
+					"Status code is 200 or 204 for existing id": true
+				}
+			]
+		},
+		{
+			"id": "aa67bd81-ddf7-4a79-a584-32ba20b65ecf",
+			"name": "10.2. GET /comments/{id} - Error - DeletedObject",
+			"url": "http://localhost:3000/posts/56fb",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404": true
+				}
+			]
+		},
+		{
+			"id": "bb2c6d6a-d099-4a93-bac3-1865f48194a6",
+			"name": "10.3. DELETE /comments/{id} - Error - DeletedObject",
+			"url": "http://localhost:3000/comments/56fb",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404 for not existing id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404 for not existing id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404 for not existing id": true
+				}
+			]
+		},
+		{
+			"id": "f3fe7235-f705-4883-b7fd-6c3e53018d60",
+			"name": "10.4. DELETE /comments/{id} - Error - NotExisting",
+			"url": "http://localhost:3000/posts/100",
+			"time": 2,
+			"responseCode": {
+				"code": 404,
+				"name": "Not Found"
+			},
+			"tests": {
+				"Status code is 404 for not existing id": true
+			},
+			"testPassFailCounts": {
+				"Status code is 404 for not existing id": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 404 for not existing id": true
+				}
+			]
+		},
+		{
+			"id": "eae4cefd-0f56-42f1-970b-aeffa5323511",
+			"name": "11. GET /profile - Success - ReturnedData",
+			"url": "http://localhost:3000/profile",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Object has name": true,
+				"Name is not empty strings": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Object has name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Name is not empty strings": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Object has name": true,
+					"Name is not empty strings": true
+				}
+			]
+		},
+		{
+			"id": "ced665e5-5426-4d72-baaf-fc8bc772f461",
+			"name": "12.1. PUT /profile - Success - ReturnedData",
+			"url": "http://localhost:3000/profile",
+			"time": 6,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Object has name": true,
+				"Name is not empty strings": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Object has name": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Name is not empty strings": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				6
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Object has name": true,
+					"Name is not empty strings": true
+				}
+			]
+		},
+		{
+			"id": "c9c4e529-a085-4c10-884d-9f999822ba8b",
+			"name": "12.2. GET /profile - Success - UpdatedObject",
+			"url": "http://localhost:3000/profile",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 200": true,
+				"Name expected values": true
+			},
+			"testPassFailCounts": {
+				"Status code is 200": {
+					"pass": 1,
+					"fail": 0
+				},
+				"Name expected values": {
+					"pass": 1,
+					"fail": 0
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 200": true,
+					"Name expected values": true
+				}
+			]
+		},
+		{
+			"id": "932669c5-478a-4a8e-ad4b-c3a774e3ecda",
+			"name": "12.3. PUT /profile - Error - TooLongFields",
+			"url": "http://localhost:3000/profile",
+			"time": 2,
+			"responseCode": {
+				"code": 200,
+				"name": "OK"
+			},
+			"tests": {
+				"Status code is 400 for too long field": false,
+				"Response contains validation error message": false
+			},
+			"testPassFailCounts": {
+				"Status code is 400 for too long field": {
+					"pass": 0,
+					"fail": 1
+				},
+				"Response contains validation error message": {
+					"pass": 0,
+					"fail": 1
+				}
+			},
+			"times": [
+				2
+			],
+			"allTests": [
+				{
+					"Status code is 400 for too long field": false,
+					"Response contains validation error message": false
+				}
+			]
+		}
+	],
+	"count": 1,
+	"totalTime": 150,
+	"collection": {
+		"requests": [
+			{
+				"id": "8eadd8c2-817b-46eb-bafb-c6ae87c592f8",
+				"method": "GET"
+			},
+			{
+				"id": "9a2017a8-79d4-4eb2-a9cb-ab61a0f1a690",
+				"method": "GET"
+			},
+			{
+				"id": "92b5c594-c2bd-425f-a157-6c74d67bcd54",
+				"method": "GET"
+			},
+			{
+				"id": "168aabf3-b61e-4f6e-849c-3d35a5886294",
+				"method": "GET"
+			},
+			{
+				"id": "2f79b87b-e1df-4803-a953-7286b3c83fdd",
+				"method": "POST"
+			},
+			{
+				"id": "574060c1-91cb-491c-9e98-20e8b6af3ccd",
+				"method": "GET"
+			},
+			{
+				"id": "934b0a72-8d30-4d2f-97d5-50aad38f0a32",
+				"method": "POST"
+			},
+			{
+				"id": "e9dbff1a-d6ea-4769-91a1-b83680e4e10b",
+				"method": "POST"
+			},
+			{
+				"id": "3eb58fe0-b4af-4c8d-bd41-31045762cddf",
+				"method": "PUT"
+			},
+			{
+				"id": "043b9ec5-6382-46c9-8451-d9255833597d",
+				"method": "GET"
+			},
+			{
+				"id": "efc9108b-1283-42f3-b94b-07192e02fce3",
+				"method": "PUT"
+			},
+			{
+				"id": "3ae13327-ba28-4d18-924f-315d4268fb1c",
+				"method": "PUT"
+			},
+			{
+				"id": "f8590503-2d6a-4446-b90f-277c430add5d",
+				"method": "DELETE"
+			},
+			{
+				"id": "fee4f9c6-eeb4-4807-93ea-b0f14fab2c73",
+				"method": "GET"
+			},
+			{
+				"id": "e1ac4627-22eb-4918-97fc-6604f8367a40",
+				"method": "DELETE"
+			},
+			{
+				"id": "6d8d846d-c34f-4759-8f73-5061ee8be918",
+				"method": "DELETE"
+			},
+			{
+				"id": "599f3853-e036-46f0-b198-dd67d471757e",
+				"method": "DELETE"
+			},
+			{
+				"id": "5a7cbfa8-c6fc-4a46-995b-9d8cbd70412d",
+				"method": "GET"
+			},
+			{
+				"id": "6062e207-2c37-4562-a039-978b862845f7",
+				"method": "GET"
+			},
+			{
+				"id": "9df6c2be-9bce-4e9d-ba0e-33a63e00cbcc",
+				"method": "GET"
+			},
+			{
+				"id": "905ec80c-dd1e-45c2-b13f-7d2d9d15794b",
+				"method": "GET"
+			},
+			{
+				"id": "4131cb21-dceb-40ed-bf13-2081d38206d0",
+				"method": "GET"
+			},
+			{
+				"id": "e8f1fd8e-a3ce-45ab-81e0-45f4f1365fb3",
+				"method": "POST"
+			},
+			{
+				"id": "e2e80ca2-0764-447c-9f38-f4887d340b86",
+				"method": "GET"
+			},
+			{
+				"id": "cd77396d-f0b6-490d-a70c-45792abea740",
+				"method": "POST"
+			},
+			{
+				"id": "84b7b38b-be00-4d31-88bf-a29a2301af2b",
+				"method": "POST"
+			},
+			{
+				"id": "50e0c005-f782-473d-8e81-2e0931368a73",
+				"method": "POST"
+			},
+			{
+				"id": "397b4156-5b76-47aa-a764-8bcd96688d3b",
+				"method": "PUT"
+			},
+			{
+				"id": "9e31d66a-b767-46aa-9456-7c7ab7a7e4c4",
+				"method": "GET"
+			},
+			{
+				"id": "ed5da6ac-9fc3-4c81-85d5-d7dedec8f982",
+				"method": "PUT"
+			},
+			{
+				"id": "b8a07b69-4167-4fe0-8e86-5debc193eba1",
+				"method": "PUT"
+			},
+			{
+				"id": "ce3297ed-4f43-4884-8b57-6bfea4b1b82a",
+				"method": "DELETE"
+			},
+			{
+				"id": "aa67bd81-ddf7-4a79-a584-32ba20b65ecf",
+				"method": "GET"
+			},
+			{
+				"id": "bb2c6d6a-d099-4a93-bac3-1865f48194a6",
+				"method": "DELETE"
+			},
+			{
+				"id": "f3fe7235-f705-4883-b7fd-6c3e53018d60",
+				"method": "DELETE"
+			},
+			{
+				"id": "eae4cefd-0f56-42f1-970b-aeffa5323511",
+				"method": "GET"
+			},
+			{
+				"id": "ced665e5-5426-4d72-baaf-fc8bc772f461",
+				"method": "PUT"
+			},
+			{
+				"id": "c9c4e529-a085-4c10-884d-9f999822ba8b",
+				"method": "GET"
+			},
+			{
+				"id": "932669c5-478a-4a8e-ad4b-c3a774e3ecda",
+				"method": "PUT"
+			}
+		]
+	}
+}

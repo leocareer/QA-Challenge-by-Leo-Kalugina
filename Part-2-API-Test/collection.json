@@ -7,1338 +7,2015 @@
 	},
 	"item": [
 		{
-			"name": "1. GET /posts",
-			"event": [
+			"name": "Posts",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Response format",
-							"pm.test(\"Response is an array\", function () {",
-							"    pm.expect(jsonData).to.be.an(\"array\");",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Each object has id, title, and author\", function () {",
-							"    jsonData.forEach(post => {",
-							"        pm.expect(post).to.have.all.keys(\"id\", \"title\", \"author\");",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are not empty\", function () {",
-							"    jsonData.forEach(post => {",
-							"        pm.expect(post.id).to.not.be.undefined;",
-							"        pm.expect(post.id).to.not.be.null;",
-							"        pm.expect(post.id).to.not.eql('');",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are positive numbers\", function () {",
-							"    jsonData.forEach(post => {",
-							"        pm.expect(post.id).to.be.a(\"number\").to.be.above(0);",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are unique\", function () {",
-							"    const ids = jsonData.map(p => p.id);",
-							"    const uniqueIds = new Set(ids);",
-							"    pm.expect(uniqueIds.size).to.eql(ids.length);",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Title and Author are not empty strings\", function () {",
-							"    jsonData.forEach(post => {",
-							"        pm.expect(post.title).to.be.a(\"string\").and.not.empty;",
-							"        pm.expect(post.author).to.be.a(\"string\").and.not.empty;",
-							"    });",
-							"});",
-							"",
-							"// Matching check",
-							"pm.test(\"Title and Author match expected\", function () {",
-							"    jsonData.forEach(post => {",
-							"        pm.expect(post.title).contain(\"Post\");",
-							"        pm.expect(post.author).contain(\"Author\");",
-							"    });",
-							"});",
-							"",
-							"// Record count check",
-							"pm.test(\"Expected number of posts\", function () {",
-							"    pm.expect(jsonData.length).to.eql(2);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "2.1. GET /posts/{id} existing",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 200 for existing id\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Object has id, title, and author\", function () {",
-							"    pm.expect(jsonData).to.have.all.keys(\"id\", \"title\", \"author\");",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are not empty\", function () {",
-							"    pm.expect(jsonData.id).to.not.be.undefined;",
-							"    pm.expect(jsonData.id).to.not.be.null;",
-							"    pm.expect(jsonData.id).to.not.eql('');",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are positive numbers\", function () {",
-							"    pm.expect(jsonData.id).to.be.a(\"number\").to.be.above(0);",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Title and Author are not empty strings\", function () {",
-							"    pm.expect(jsonData.title).to.be.a(\"string\").and.not.empty;",
-							"    pm.expect(jsonData.author).to.be.a(\"string\").and.not.empty;",
-							"});",
-							"",
-							"// Matching check",
-							"pm.test(\"Title and Author match expected\", function () {",
-							"    pm.expect(jsonData.title).contain(\"Post\");",
-							"    pm.expect(jsonData.author).contain(\"Author\");",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts/{{existing_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{existing_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "2.2. GET /posts/{id} not existing",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Response code",
-							"pm.test(\"Status code is 404 for not existing id\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				},
-				{
-					"listen": "prerequest",
-					"script": {
-						"exec": [
-							"    const postIds = [1, 999];",
-							"    pm.environment.set(\"postIds\", JSON.stringify(postIds));",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts/{{not_existing_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{not_existing_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.1. POST /posts",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"let jsonData = pm.response.json();",
-							"",
-							"pm.collectionVariables.set(\"created_post_id\", pm.response.json().id);",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Response contains id, title, and author\", function () {",
-							"    pm.expect(jsonData).to.have.all.keys(\"id\", \"title\", \"author\");",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are not empty\", function () {",
-							"    pm.expect(jsonData.id).to.not.be.undefined;",
-							"    pm.expect(jsonData.id).to.not.be.null;",
-							"    pm.expect(jsonData.id).to.not.eql('');",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are positive numbers\", function () {",
-							"    pm.expect(jsonData.id).to.be.a(\"number\").to.be.above(0);",
-							"});",
-							"",
-							"",
-							"// Data check",
-							"pm.test(\"Title and Author have expected values\", function () {",
-							"    pm.expect(jsonData.title).to.equal(\"New Post\");",
-							"    pm.expect(jsonData.author).to.equal(\"New Author\");",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"title\": \"New Post\",\n  \"author\": \"New Author\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "1.1. GET /posts - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Response format",
+									"pm.test(\"Response is an array\", function () {",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Each object has id, title, and author\", function () {",
+									"    jsonData.forEach(post => {",
+									"        pm.expect(post).to.have.all.keys(\"id\", \"title\", \"author\");",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are not empty\", function () {",
+									"    jsonData.forEach(post => {",
+									"        pm.expect(post.id).to.not.be.undefined;",
+									"        pm.expect(post.id).to.not.be.null;",
+									"        pm.expect(post.id).to.not.eql('');",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are positive numbers\", function () {",
+									"    jsonData.forEach(post => {",
+									"        pm.expect(post.id).to.be.a(\"number\").to.be.above(0);",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are unique\", function () {",
+									"    const ids = jsonData.map(p => p.id);",
+									"    const uniqueIds = new Set(ids);",
+									"    pm.expect(uniqueIds.size).to.eql(ids.length);",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Title and Author are not empty strings\", function () {",
+									"    jsonData.forEach(post => {",
+									"        pm.expect(post.title).to.be.a(\"string\").and.not.empty;",
+									"        pm.expect(post.author).to.be.a(\"string\").and.not.empty;",
+									"    });",
+									"});",
+									"",
+									"// Matching check",
+									"pm.test(\"Title and Author match expected\", function () {",
+									"    jsonData.forEach(post => {",
+									"        pm.expect(post.title).contain(\"Post\");",
+									"        pm.expect(post.author).contain(\"Author\");",
+									"    });",
+									"});",
+									"",
+									"// Record count check",
+									"pm.test(\"Expected number of posts\", function () {",
+									"    pm.expect(jsonData.length).to.eql(2);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/posts",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "3000",
-					"path": [
-						"posts"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "3.2. GET /posts/{id} created",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Database check: Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Database check: Data check",
-							"pm.test(\"Title and Author has expected values\", function () {",
-							"    pm.expect(jsonData.title).to.equal(\"New Post\");",
-							"    pm.expect(jsonData.author).to.equal(\"New Author\");",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts/{{created_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{created_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "4.1. PUT /posts/{id} created",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 200 for existing id\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Response contains id, title, and author\", function () {",
-							"    pm.expect(jsonData).to.have.all.keys(\"id\", \"title\", \"author\");",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Title and Author has expected values\", function () {",
-							"    pm.expect(jsonData.title).to.equal(\"Updated Post\");",
-							"    pm.expect(jsonData.author).to.equal(\"Updated Author\");",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"title\": \"Updated Post\",\n  \"author\": \"Updated Author\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/posts/{{created_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{created_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "4.2. GET /posts/{id} updated",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Database check: Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Database check: Data check",
-							"pm.test(\"Title and Author have expected values\", function () {",
-							"    pm.expect(jsonData.title).to.equal(\"Updated Post\");",
-							"    pm.expect(jsonData.author).to.equal(\"Updated Author\");",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "1.2 GET /posts - Success - Sorting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Posts are sorted by id in descending order\", function () {",
+									"    for (let i = 0; i < jsonData.length - 1; i++) {",
+									"        const current = Number(jsonData[i].id);",
+									"        const next = Number(jsonData[i + 1].id);",
+									"        pm.expect(current).to.be.above(next);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/posts/{{created_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{created_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "4.3. PUT /posts/{id} not existing",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not existing id\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"title\": \"Updated Post\",\n  \"author\": \"Updated Author\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts?_sort=id&_order=desc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts"
+							],
+							"query": [
+								{
+									"key": "_sort",
+									"value": "id"
+								},
+								{
+									"key": "_order",
+									"value": "desc"
+								}
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/posts/{{not_existing_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{not_existing_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "5.1. DELETE /posts/{id} created",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Response code",
-							"pm.test(\"Status code is 200 or 204 for existing id\", function () {",
-							"    pm.expect([200, 204]).to.include(pm.response.code);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts/{{created_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{created_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "5.2. GET /posts/{id} deleted",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Database check: Response code",
-							"pm.test(\"Status code is 404\", function () {",
-							"    pm.expect([404]).to.include(pm.response.code);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts/{{created_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{created_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "5.3. DELETE /posts/{id} not existing",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Response code",
-							"pm.test(\"Status code is 404 for not existing id\", function () {",
-							"    pm.expect([404]).to.include(pm.response.code);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts/{{not_existing_post_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{not_existing_post_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "6. GET /comments",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Response format",
-							"pm.test(\"Response is an array\", function () {",
-							"    pm.expect(jsonData).to.be.an(\"array\");",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Each object has id, body, and postId\", function () {",
-							"    jsonData.forEach(comment => {",
-							"        pm.expect(comment).to.have.all.keys(\"id\", \"body\", \"postId\");",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are not empty\", function () {",
-							"    jsonData.forEach(comment => {",
-							"        pm.expect(comment.id).to.not.be.undefined;",
-							"        pm.expect(comment.id).to.not.be.null;",
-							"        pm.expect(comment.id).to.not.eql('');",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are positive numbers\", function () {",
-							"    jsonData.forEach(comment => {",
-							"        pm.expect(comment.id).to.be.a(\"number\").to.be.above(0);",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are unique\", function () {",
-							"    const ids = jsonData.map(comment => comment.id);",
-							"    const uniqueIds = new Set(ids);",
-							"    pm.expect(uniqueIds.size).to.eql(ids.length);",
-							"    console.log(ids)",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Body values are not empty strings\", function () {",
-							"    jsonData.forEach(comment => {",
-							"        pm.expect(comment.body).to.be.a(\"string\").and.not.empty;",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"PostId values are not empty\", function () {",
-							"    jsonData.forEach(comment => {",
-							"        pm.expect(comment.postId).to.not.be.undefined;",
-							"        pm.expect(comment.postId).to.not.be.null;",
-							"        pm.expect(comment.postId).to.not.eql('');",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"PostId values are positive numbers\", function () {",
-							"    jsonData.forEach(comment => {",
-							"        pm.expect(comment.postId).to.be.a(\"number\").to.be.above(0);",
-							"    });",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Each postId matches an existing post\", function (done) {",
-							"    pm.sendRequest(\"http://localhost:3000/posts\", function (err, res) {",
-							"        if (err) {",
-							"            console.error(\"Error fetching posts\", err);",
-							"            return done();",
-							"        }",
-							"",
-							"        const valid_postId = res.json().map(post => post.id);",
-							"",
-							"        jsonData.forEach(comment => {",
-							"            pm.expect(valid_postId).to.include(comment.postId);",
-							"        });",
-							"",
-							"        done();",
-							"    });",
-							"});",
-							""
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/comments",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "7.1. GET /comments/{id} existing",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 200 for existing id\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Object has id, body, and postId\", function () {",
-							"    pm.expect(jsonData).to.have.all.keys(\"id\", \"body\", \"postId\");",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are not empty\", function () {",
-							"    pm.expect(jsonData.id).to.not.be.undefined;",
-							"    pm.expect(jsonData.id).to.not.be.null;",
-							"    pm.expect(jsonData.id).to.not.eql('');",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are positive numbers\", function () {",
-							"    pm.expect(jsonData.id).to.be.a(\"number\").to.be.above(0);",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Body values are not empty strings\", function () {",
-							"    pm.expect(jsonData.body).to.be.a(\"string\").and.not.empty;",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/comments/{{existing_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments",
-						"{{existing_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "7.2. GET /comments/{id} not existing",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Response code",
-							"pm.test(\"Status code is 404 for not existing id\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/comments/{{not_existing_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments",
-						"{{not_existing_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "8.1. POST /comments",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"let jsonData = pm.response.json();",
-							"",
-							"pm.collectionVariables.set(\"created_comment_id\", pm.response.json().id);",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 201\", function () {",
-							"    pm.response.to.have.status(201);",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Response contains id, body, and postId\", function () {",
-							"    pm.expect(jsonData).to.have.all.keys(\"id\", \"body\", \"postId\");",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are not empty\", function () {",
-							"    pm.expect(jsonData.id).to.not.be.undefined;",
-							"    pm.expect(jsonData.id).to.not.be.null;",
-							"    pm.expect(jsonData.id).to.not.eql('');",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"ID values are positive number\", function () {",
-							"    pm.expect(jsonData.id).to.be.a(\"number\").to.be.above(0);",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Body and postId have expected values\", function () {",
-							"    pm.expect(jsonData.body).to.equal(\"New comment\");",
-							"    pm.expect(jsonData.postId).to.equal(2);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"body\": \"New comment\",\n  \"postId\": 2\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "2.1. GET /posts/{id} - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200 for existing id\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Object has id, title, and author\", function () {",
+									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"title\", \"author\");",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are not empty\", function () {",
+									"    pm.expect(jsonData.id).to.not.be.undefined;",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.id).to.not.eql('');",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are positive numbers\", function () {",
+									"    pm.expect(jsonData.id).to.be.a(\"number\").to.be.above(0);",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Title and Author are not empty strings\", function () {",
+									"    pm.expect(jsonData.title).to.be.a(\"string\").and.not.empty;",
+									"    pm.expect(jsonData.author).to.be.a(\"string\").and.not.empty;",
+									"});",
+									"",
+									"// Matching check",
+									"pm.test(\"Title and Author match expected\", function () {",
+									"    pm.expect(jsonData.title).contain(\"Post\");",
+									"    pm.expect(jsonData.author).contain(\"Author\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/comments",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "3000",
-					"path": [
-						"comments"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "8.2. GET /comments/{id} created",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Database check: Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Database check: Data check",
-							"pm.test(\"Body and postId has expected values\", function () {",
-							"    pm.expect(jsonData.body).to.equal(\"New comment\");",
-							"    pm.expect(jsonData.postId).to.equal(2);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/comments/{{created_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments",
-						"{{created_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "9.1. PUT /comments/{id} created",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 200 for existing id\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Response contains id, body, and postId\", function () {",
-							"    pm.expect(jsonData).to.have.all.keys(\"id\", \"body\", \"postId\");",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Body and postId has expected values\", function () {",
-							"    pm.expect(jsonData.body).to.equal(\"Updated comment\");",
-							"    pm.expect(jsonData.postId).to.equal(3);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"body\": \"Updated comment\",\n  \"postId\": 3\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{existing_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{existing_post_id}}"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/comments/{{created_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments",
-						"{{created_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "9.2. GET /comments/{id} updated",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Database check: Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Database check: Data check",
-							"pm.test(\"Body and postId has expected values\", function () {",
-							"    pm.expect(jsonData.body).to.equal(\"Updated comment\");",
-							"    pm.expect(jsonData.postId).to.equal(3);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "2.2. GET /posts/{id} - Error - NotExisting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Response code",
+									"pm.test(\"Status code is 404 for not existing id\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"    const postIds = [1, 999];",
+									"    pm.environment.set(\"postIds\", JSON.stringify(postIds));",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/comments/{{created_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "3000",
-					"path": [
-						"comments",
-						"{{created_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "9.3. PUT /comments/{id} not existing",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Status code is 404 for not existing id\", function () {",
-							"    pm.response.to.have.status(404);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"body\": \"Updated comment\",\n  \"postId\": 3\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{not_existing_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{not_existing_post_id}}"
+							]
 						}
-					}
+					},
+					"response": []
 				},
-				"url": {
-					"raw": "http://localhost:3000/comments/{{not_existing_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments",
-						"{{not_existing_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "10.1. DELETE /comments/{id} created",
-			"event": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Response code",
-							"pm.test(\"Status code is 200 or 204 for existing id\", function () {",
-							"    pm.expect([200, 204]).to.include(pm.response.code);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/comments/{{created_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"comments",
-						"{{created_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "10.2. GET /comments/{id} deleted",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Database check: Response code",
-							"pm.test(\"Status code is 404\", function () {",
-							"    pm.expect([404]).to.include(pm.response.code);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts/{{created_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{created_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "10.3. DELETE /comments/{id} not existing",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"// Response code",
-							"pm.test(\"Status code is 404 for not existing id\", function () {",
-							"    pm.expect([404]).to.include(pm.response.code);",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "DELETE",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/posts/{{not_existing_comment_id}}",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"posts",
-						"{{not_existing_comment_id}}"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "11. GET /profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Object has name\", function () {",
-							"    pm.expect(jsonData).to.have.property(\"name\");",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Name is not empty strings\", function () {",
-							"    pm.expect(jsonData.name).to.be.a(\"string\").and.not.empty;",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:3000/profile",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"profile"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "12.1. PUT /profile",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Structure check",
-							"pm.test(\"Object has name\", function () {",
-							"    pm.expect(jsonData).to.have.property(\"name\");",
-							"});",
-							"",
-							"// Data check",
-							"pm.test(\"Name is not empty strings\", function () {",
-							"    pm.expect(jsonData.name).to.be.a(\"string\").and.to.equal(\"Updated Name\");",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"request": {
-				"method": "PUT",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n  \"name\": \"Updated Name\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "3.1. POST /posts - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.collectionVariables.set(\"created_post_id\", pm.response.json().id);",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Response contains id, title, and author\", function () {",
+									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"title\", \"author\");",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are not empty\", function () {",
+									"    pm.expect(jsonData.id).to.not.be.undefined;",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.id).to.not.eql('');",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are positive numbers\", function () {",
+									"    pm.expect(jsonData.id).to.be.a(\"number\").to.be.above(0);",
+									"});",
+									"",
+									"",
+									"// Data check",
+									"pm.test(\"Title and Author have expected values\", function () {",
+									"    pm.expect(jsonData.title).to.equal(\"New Post\");",
+									"    pm.expect(jsonData.author).to.equal(\"New Author\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/profile",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "3000",
-					"path": [
-						"profile"
-					]
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"New Post\",\n  \"author\": \"New Author\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.2. GET /posts/{id} - Success - CreatedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Database check: Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Database check: Data check",
+									"pm.test(\"Title and Author has expected values\", function () {",
+									"    pm.expect(jsonData.title).to.equal(\"New Post\");",
+									"    pm.expect(jsonData.author).to.equal(\"New Author\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{created_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{created_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.3. POST /posts - Error - EmptyFields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400 or 422\", function () {",
+									"    pm.expect([400, 422]).to.include(pm.response.code);",
+									"});",
+									"",
+									"pm.test(\"Response contains validation error message\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"error\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "3.4. POST /posts - Error - TooLongFields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400 for too long fields\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response contains validation error message\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"error\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"selpydcjzhrjjebwmuqpmmeadyzzmdr\",\n  \"author\": \"selpydcjzhrjjebwmuqpmmeadyzzmdr\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/posts",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.1. PUT /posts/{id} - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200 for existing id\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Response contains id, title, and author\", function () {",
+									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"title\", \"author\");",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Title and Author has expected values\", function () {",
+									"    pm.expect(jsonData.title).to.equal(\"Updated Post\");",
+									"    pm.expect(jsonData.author).to.equal(\"Updated Author\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Post\",\n  \"author\": \"Updated Author\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/posts/{{created_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{created_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.2. GET /posts/{id} - Success - UpdatedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Database check: Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Database check: Data check",
+									"pm.test(\"Title and Author have expected values\", function () {",
+									"    pm.expect(jsonData.title).to.equal(\"Updated Post\");",
+									"    pm.expect(jsonData.author).to.equal(\"Updated Author\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/posts/{{created_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{created_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.3. PUT /posts/{id} - Error - NotExisting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not existing id\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"Updated Post\",\n  \"author\": \"Updated Author\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/posts/{{not_existing_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{not_existing_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "4.4. PUT /posts/{id} - Error - TooLongFields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400 for too long fields\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response contains validation error message\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"error\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"title\": \"selpydcjzhrjjebwmuqpmmeadyzzmdr\",\n  \"author\": \"selpydcjzhrjjebwmuqpmmeadyzzmdr\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/posts/{{created_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{created_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.1. DELETE /posts/{id} - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200 or 204 for existing id\", function () {",
+									"    pm.expect([200, 204]).to.include(pm.response.code);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Object has id, title, and author\", function () {",
+									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"title\", \"author\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{created_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{created_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.2. GET /posts/{id} - Error - DeletedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Database check: Response code",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.expect([404]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{created_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{created_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.3. DELETE /posts/{id} - Error - DeletedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Database check: Response code",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.expect([404]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{created_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{created_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.4. DELETE /posts/{id} - Error - NotExisting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Response code",
+									"pm.test(\"Status code is 404 for not existing id\", function () {",
+									"    pm.expect([404]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{not_existing_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{not_existing_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.5. DELETE /posts/{id} - Success - PreparingFor5.6",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.collectionVariables.set(\"deleted_post_id\", pm.response.json().id);",
+									"",
+									"pm.test(\"Status code is 200 or 204\", function () {",
+									"    pm.expect([200, 204]).to.include(pm.response.code);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{existing_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{existing_post_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "5.6. GET /comments/{id} - Success - DeletedPostComments",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Comments deleted with deleted post\", function () {",
+									"    pm.expect(jsonData.length).to.eql(0);",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/comments?postId={{deleted_post_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments"
+							],
+							"query": [
+								{
+									"key": "postId",
+									"value": "{{deleted_post_id}}"
+								}
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
 		},
 		{
-			"name": "12.2. GET /profile updated",
-			"event": [
+			"name": "Comments",
+			"item": [
 				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"const jsonData = pm.response.json();",
-							"",
-							"// Database check: Response code",
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"",
-							"// Database check: Data check",
-							"pm.test(\"Name expected values\", function () {",
-							"    pm.expect(jsonData.name).to.equal(\"Updated Name\");",
-							"});"
-						],
-						"type": "text/javascript",
-						"packages": {}
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "",
-					"options": {
-						"raw": {
-							"language": "json"
+					"name": "6.1. GET /comments - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Response format",
+									"pm.test(\"Response is an array\", function () {",
+									"    pm.expect(jsonData).to.be.an(\"array\");",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Each object has id, body, and postId\", function () {",
+									"    jsonData.forEach(comment => {",
+									"        pm.expect(comment).to.have.all.keys(\"id\", \"body\", \"postId\");",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are not empty\", function () {",
+									"    jsonData.forEach(comment => {",
+									"        pm.expect(comment.id).to.not.be.undefined;",
+									"        pm.expect(comment.id).to.not.be.null;",
+									"        pm.expect(comment.id).to.not.eql('');",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are positive numbers\", function () {",
+									"    jsonData.forEach(comment => {",
+									"        pm.expect(comment.id).to.be.a(\"number\").to.be.above(0);",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are unique\", function () {",
+									"    const ids = jsonData.map(comment => comment.id);",
+									"    const uniqueIds = new Set(ids);",
+									"    pm.expect(uniqueIds.size).to.eql(ids.length);",
+									"    console.log(ids)",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Body values are not empty strings\", function () {",
+									"    jsonData.forEach(comment => {",
+									"        pm.expect(comment.body).to.be.a(\"string\").and.not.empty;",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"PostId values are not empty\", function () {",
+									"    jsonData.forEach(comment => {",
+									"        pm.expect(comment.postId).to.not.be.undefined;",
+									"        pm.expect(comment.postId).to.not.be.null;",
+									"        pm.expect(comment.postId).to.not.eql('');",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"PostId values are positive numbers\", function () {",
+									"    jsonData.forEach(comment => {",
+									"        pm.expect(comment.postId).to.be.a(\"number\").to.be.above(0);",
+									"    });",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Each postId matches an existing post\", function (done) {",
+									"    pm.sendRequest(\"http://localhost:3000/posts\", function (err, res) {",
+									"        if (err) {",
+									"            console.error(\"Error fetching posts\", err);",
+									"            return done();",
+									"        }",
+									"",
+									"        const valid_postId = res.json().map(post => post.id);",
+									"",
+									"        jsonData.forEach(comment => {",
+									"            pm.expect(valid_postId).to.include(comment.postId);",
+									"        });",
+									"",
+									"        done();",
+									"    });",
+									"});",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
 						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:3000/profile",
-					"protocol": "http",
-					"host": [
-						"localhost"
 					],
-					"port": "3000",
-					"path": [
-						"profile"
-					]
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "6.2 GET /comments - Success - Sorting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Posts are sorted by id in descending order\", function () {",
+									"    for (let i = 0; i < jsonData.length - 1; i++) {",
+									"        const current = Number(jsonData[i].id);",
+									"        const next = Number(jsonData[i + 1].id);",
+									"        pm.expect(current).to.be.above(next);",
+									"    }",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/comments?_sort=id&_order=desc",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments"
+							],
+							"query": [
+								{
+									"key": "_sort",
+									"value": "id"
+								},
+								{
+									"key": "_order",
+									"value": "desc"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.1. GET /comments/{id}  - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200 for existing id\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Object has id, body, and postId\", function () {",
+									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"body\", \"postId\");",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are not empty\", function () {",
+									"    pm.expect(jsonData.id).to.not.be.undefined;",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.id).to.not.eql('');",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are positive numbers\", function () {",
+									"    pm.expect(jsonData.id).to.be.a(\"number\").to.be.above(0);",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Body values are not empty strings\", function () {",
+									"    pm.expect(jsonData.body).to.be.a(\"string\").and.not.empty;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/comments/{{existing_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{existing_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "7.2. GET /comments/{id} - Error - NotExisting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Response code",
+									"pm.test(\"Status code is 404 for not existing id\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/comments/{{not_existing_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{not_existing_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.1. POST /comments - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"let jsonData = pm.response.json();",
+									"",
+									"pm.collectionVariables.set(\"created_comment_id\", pm.response.json().id);",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 201\", function () {",
+									"    pm.response.to.have.status(201);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Response contains id, body, and postId\", function () {",
+									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"body\", \"postId\");",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are not empty\", function () {",
+									"    pm.expect(jsonData.id).to.not.be.undefined;",
+									"    pm.expect(jsonData.id).to.not.be.null;",
+									"    pm.expect(jsonData.id).to.not.eql('');",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"ID values are positive number\", function () {",
+									"    pm.expect(jsonData.id).to.be.a(\"number\").to.be.above(0);",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Body and postId have expected values\", function () {",
+									"    pm.expect(jsonData.body).to.equal(\"New comment\");",
+									"    pm.expect(jsonData.postId).to.equal(2);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": \"New comment\",\n  \"postId\": 2\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.2. GET /comments/{id} - Success - CreatedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Database check: Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Database check: Data check",
+									"pm.test(\"Body and postId has expected values\", function () {",
+									"    pm.expect(jsonData.body).to.equal(\"New comment\");",
+									"    pm.expect(jsonData.postId).to.equal(2);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/comments/{{created_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{created_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.3. POST /comments - Error - EmptyFields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400 or 422 for existing id\", function () {",
+									"    pm.expect([400, 422]).to.include(pm.response.code);",
+									"});",
+									"",
+									"pm.test(\"Response contains validation error message\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"error\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.4. POST /comments - Error - InvalidPostID",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400 or 422\", function () {",
+									"    pm.expect([400, 422]).to.include(pm.response.code);",
+									"});",
+									"",
+									"pm.test(\"Response contains validation error message\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"error\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": \"New comment\",\n  \"postId\": 200\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "8.5. POST /comments - Error - TooLongFields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400 for too long fields\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response contains validation error message\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"error\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": \"qvhsxlllufkejskmnqnakrkmxyzcgtlfzutzjekykdcstppbpmwkrsktlzxwbyxxojcwnxgcluenexuifnacvblwdfcbwzbobtnvv\",\n  \"postId\": 11111111111\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/comments",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.1. PUT /comments/{id} - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200 for existing id\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Response contains id, body, and postId\", function () {",
+									"    pm.expect(jsonData).to.have.all.keys(\"id\", \"body\", \"postId\");",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Body and postId has expected values\", function () {",
+									"    pm.expect(jsonData.body).to.equal(\"Updated comment\");",
+									"    pm.expect(jsonData.postId).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": \"Updated comment\",\n  \"postId\": 1\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/comments/{{created_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{created_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.2. GET /comments/{id} - Success - UpdatedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Database check: Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Database check: Data check",
+									"pm.test(\"Body and postId has expected values\", function () {",
+									"    pm.expect(jsonData.body).to.equal(\"Updated comment\");",
+									"    pm.expect(jsonData.postId).to.equal(1);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/comments/{{created_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{created_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.3. PUT /comments/{id} - Error - NotExisting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 404 for not existing id\", function () {",
+									"    pm.response.to.have.status(404);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": \"Updated comment\",\n  \"postId\": 3\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/comments/{{not_existing_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{not_existing_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "9.4. PUT /comments/{id} - Error - TooLongFields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400 for too long fields\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response contains validation error message\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"error\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"body\": \"qvhsxlllufkejskmnqnakrkmxyzcgtlfzutzjekykdcstppbpmwkrsktlzxwbyxxojcwnxgcluenexuifnacvblwdfcbwzbobtnvv\",\n  \"postId\": 11111111111\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/comments/{{created_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{created_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10.1. DELETE /comments/{id} - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Response code",
+									"pm.test(\"Status code is 200 or 204 for existing id\", function () {",
+									"    pm.expect([200, 204]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/comments/{{created_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{created_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10.2. GET /comments/{id} - Error - DeletedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Database check: Response code",
+									"pm.test(\"Status code is 404\", function () {",
+									"    pm.expect([404]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{created_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{created_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10.3. DELETE /comments/{id} - Error - DeletedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Response code",
+									"pm.test(\"Status code is 404 for not existing id\", function () {",
+									"    pm.expect([404]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/comments/{{created_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"comments",
+								"{{created_comment_id}}"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "10.4. DELETE /comments/{id} - Error - NotExisting",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// Response code",
+									"pm.test(\"Status code is 404 for not existing id\", function () {",
+									"    pm.expect([404]).to.include(pm.response.code);",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/posts/{{not_existing_comment_id}}",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"posts",
+								"{{not_existing_comment_id}}"
+							]
+						}
+					},
+					"response": []
 				}
-			},
-			"response": []
+			]
+		},
+		{
+			"name": "Profile",
+			"item": [
+				{
+					"name": "11. GET /profile - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Object has name\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"name\");",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Name is not empty strings\", function () {",
+									"    pm.expect(jsonData.name).to.be.a(\"string\").and.not.empty;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.1. PUT /profile - Success - ReturnedData",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Structure check",
+									"pm.test(\"Object has name\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"name\");",
+									"});",
+									"",
+									"// Data check",
+									"pm.test(\"Name is not empty strings\", function () {",
+									"    pm.expect(jsonData.name).to.be.a(\"string\").and.to.equal(\"Updated Name\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Updated Name\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.2. GET /profile - Success - UpdatedObject",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"// Database check: Response code",
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// Database check: Data check",
+									"pm.test(\"Name expected values\", function () {",
+									"    pm.expect(jsonData.name).to.equal(\"Updated Name\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "12.3. PUT /profile - Error - TooLongFields",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"const jsonData = pm.response.json();",
+									"",
+									"pm.test(\"Status code is 400 for too long field\", function () {",
+									"    pm.response.to.have.status(400);",
+									"});",
+									"",
+									"pm.test(\"Response contains validation error message\", function () {",
+									"    pm.expect(jsonData).to.have.property(\"error\");",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"selpydcjzhrjjebwmuqpmmeadyzzmdr\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/profile",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"profile"
+							]
+						}
+					},
+					"response": []
+				}
+			]
 		}
 	],
 	"event": [
@@ -1375,10 +2052,6 @@
 			"type": "string"
 		},
 		{
-			"key": "created_post_id",
-			"value": ""
-		},
-		{
 			"key": "existing_comment_id",
 			"value": "1",
 			"type": "string"
@@ -1387,10 +2060,6 @@
 			"key": "not_existing_comment_id",
 			"value": "100",
 			"type": "string"
-		},
-		{
-			"key": "created_comment_id",
-			"value": ""
 		}
 	]
 }
