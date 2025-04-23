@@ -5,7 +5,7 @@ This document describes my approach to test design, the process of creating a so
 Before writing tests, I need to explore the software product and answer the following questions:
 - What does the function do? (**actions**)
 - What affects her work? (**parameters** of actions)
-- What do I need to test? (**values** параметров, of parameters, more exactly I need a model that will appear after defining values, I will create tests based on this model)
+- What do I need to test? (**values** of parameters, more exactly I need a model that will appear after defining values, I will create tests based on this model)
 - What is important for users? (for example, expand or reduce the model based on common sense)
 
 Usually for research I use the following base: specifications; product; user documentation; code inspections and code coverage analysis; statistic collection; communication with users, tech support, developers; external standards and regulations; experience and exploratory testing. In the current situation I have only very basic specification, so after a brainstorm I will make some assumptions about how the program works, based on my experience, which in reality **must be officially clarified** and fixed in any way.
@@ -38,7 +38,7 @@ Does each rule apply to a specific product or to the total number of products in
 
 Are all three rules always applied, or is there a setting to disable each rule? I will assume that all three rules are always applied. In this case, it would be possible to “disable” a rule by setting the price configuration, setting the X price to the current price and the Y price to 100%.
 
-I don’t know anything about the verification of N, M, and K, whether it is implemented or where it might be. One could assume that the rules and products in the config are stub for testing the discount calculation function, and later the rule settings will be moved to the interface, with their verification handled by a separate function. In any case, for now, I will assume that these settings are positive integers and not equal to zero. The same applies to prices, I assume the function receives prices as positive numbers.
+I don’t know anything about the validation of N, M, and K, whether it is implemented or where it might be. One could assume that the rules and products in the config are stub for testing the discount calculation function, and later the rule settings will be moved to the interface, with their verification handled by a separate function. In any case, for now, I will assume that these settings are positive integers and not equal to zero. The same applies to prices, I assume the function receives prices as positive numbers.
 
 Another important point is how the combination of prices and rule settings affects the customer experience. It’s unlikely that customers will be happy if price X is higher than the initial price, and if percentage Y is greater than 100. On the other hand, if X is set to 0, it could be very costly for the seller. Additionally, the customer might be surprised if rule 3 applies with a larger number of items in the cart, but the discount percentage Y ends up providing less savings than price X. All of this logic is critical and needs to be clearly addressed during the requirements phase.
 

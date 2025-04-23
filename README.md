@@ -1,0 +1,12 @@
+- `/Part-1-Test-Cases:`
+  - `task.md:` The original task description for Part 1, focused on testing the cashier business logic;
+  - `test-cases.pdf:` Test cases created by the approach and with the assumptions described in test-design.md;
+  - `test-data.ipynb:` The code for calculating the Expected Total Sum in test-cases.pdf based on the Precondition and Input (Cart) parameters;
+  - `test-design.md:` Summary of test design techniques used with rationale.
+
+- `/Part-1-Test-Cases:`
+  - `/api-server:` Mock API implementation using JSON Server; includes db.json, dependencies, and start script;
+  - `collection-run-results.json:` Postman run result export file;
+  - `collection.json:` Postman collection with automated API tests for all endpoints defined in the task;
+  - `task.md:` The original task description for Part 2 with required API endpoints;
+  - `test-coverage.md:` The document describes which checks have been implemented and contains some necessary comments.
