@@ -4,9 +4,9 @@
   - `test-data.ipynb:` The code for calculating the Expected Total Sum in test-cases.pdf based on the Precondition and Input (Cart) parameters;
   - `test-design.md:` Summary of test design techniques used with rationale.
 
-- `/Part-1-Test-Cases:`
+- `/Part-2-API-Test:`
   - `/api-server:` Mock API implementation using JSON Server; includes db.json, dependencies, and start script;
   - `collection-run-results.json:` Postman run result export file;
   - `collection.json:` Postman collection with automated API tests for all endpoints defined in the task;
   - `task.md:` The original task description for Part 2 with required API endpoints;
-  - `test-coverage.md:` The document describes which checks have been implemented and contains some necessary comments.
+  - `test-coverage.md:` The document describes which checks have been implemented and contains some necessary comments.s

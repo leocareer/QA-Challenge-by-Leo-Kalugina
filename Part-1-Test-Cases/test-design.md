@@ -13,7 +13,7 @@ Usually for research I use the following base: specifications; product; user doc
 **Actions** that the function performs, and their **parameters**, after let’s look at each one separately:
 - Adds products to the cart
   - how the product is added
-  - which product is added (more exactly, how it is verified in the system)
+  - which product is added (more exactly, how it is validated in the system)
 - Determines which discount to apply
   - set number of products in settings (N) for applying each rule
   - number of products in the cart
@@ -22,7 +22,7 @@ Usually for research I use the following base: specifications; product; user doc
   - number of products in the cart
   - set prices in settings for the second and third rule
 
-The first parameter of adding products to the cart is how the product is added: by clicking a button in the interface, scanning a barcode, entering a product code, searching by name, etc. That means our function can be used in any application with similar functionality. On the other hand, I only have access to the business logic, so I will assume that the function receives a product code as input. Later, during requirements implementation or interface development, the tests can be expanded. I will not test the code verification function, because the fact of its existence is based on an assumption.
+The first parameter of adding products to the cart is how the product is added: by clicking a button in the interface, scanning a barcode, entering a product code, searching by name, etc. That means our function can be used in any application with similar functionality. On the other hand, I only have access to the business logic, so I will assume that the function receives a product code as input. Later, during requirements implementation or interface development, the tests can be expanded. I will not test the code validation function, because the fact of its existence is based on an assumption.
 
 In the second parameter I have only 3 values that could belong to one equivalence class, but since they are manually set in the settings, I prefer to test all 3. On the other hand, any tests will cover these checks if each product is added at least once, so it’s enough to make sure of this fact and there’s no need to include this parameter in the model.
 
@@ -38,7 +38,7 @@ Does each rule apply to a specific product or to the total number of products in
 
 Are all three rules always applied, or is there a setting to disable each rule? I will assume that all three rules are always applied. In this case, it would be possible to “disable” a rule by setting the price configuration, setting the X price to the current price and the Y price to 100%.
 
-I don’t know anything about the validation of N, M, and K, whether it is implemented or where it might be. One could assume that the rules and products in the config are stub for testing the discount calculation function, and later the rule settings will be moved to the interface, with their verification handled by a separate function. In any case, for now, I will assume that these settings are positive integers and not equal to zero. The same applies to prices, I assume the function receives prices as positive numbers.
+I don’t know anything about the validation of N, M, and K, whether it is implemented or where it might be. One could assume that the rules and products in the config are stub for testing the discount calculation function, and later the rule settings will be moved to the interface, with their validation handled by a separate function. In any case, for now, I will assume that these settings are positive integers and not equal to zero. The same applies to prices, I assume the function receives prices as positive numbers.
 
 Another important point is how the combination of prices and rule settings affects the customer experience. It’s unlikely that customers will be happy if price X is higher than the initial price, and if percentage Y is greater than 100. On the other hand, if X is set to 0, it could be very costly for the seller. Additionally, the customer might be surprised if rule 3 applies with a larger number of items in the cart, but the discount percentage Y ends up providing less savings than price X. All of this logic is critical and needs to be clearly addressed during the requirements phase.
 
